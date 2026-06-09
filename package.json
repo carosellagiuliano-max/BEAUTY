@@ -5,8 +5,11 @@
   "packageManager": "pnpm@10.28.0",
   "scripts": {
     "dev": "pnpm --filter frontend-schnittwerk dev",
+    "dev:replit": "node scripts/replit-next.mjs dev",
     "build": "pnpm --filter frontend-schnittwerk build",
+    "build:replit": "corepack pnpm install --frozen-lockfile && corepack pnpm build",
     "start": "pnpm --filter frontend-schnittwerk start",
+    "start:replit": "node scripts/replit-next.mjs start",
     "dev:all": "pnpm -r dev",
     "build:all": "pnpm -r build",
     "lint": "pnpm -r lint",

@@ -17,6 +17,36 @@ pnpm install
 pnpm dev
 ```
 
+## Replit Preview & Deployment
+
+Dieses Demo-Repo ist fuer Replit vorbereitet. Nach dem GitHub-Import kann Replit
+die App ueber die vorhandene `.replit`-Konfiguration starten.
+
+Preview im Replit Editor:
+
+```bash
+pnpm dev:replit
+```
+
+Production Build/Start fuer Replit Deployments:
+
+```bash
+pnpm build
+pnpm start:replit
+```
+
+Die Replit-Konfiguration nutzt:
+
+- Node.js 20
+- pnpm via Corepack ohne globale Symlink-Installation
+- Next.js auf `0.0.0.0`
+- Replit-`PORT` mit Fallback auf `3000`
+- Mock Mode fuer eine sichere Praesentationsdemo ohne echte Zahlungen/E-Mails
+
+Fuer Replit muessen keine produktiven Secrets im Repo liegen. Falls spaeter echte
+Supabase-, SMTP- oder Payment-Daten genutzt werden, diese nur in Replit Secrets
+hinterlegen und den Mock Mode bewusst deaktivieren.
+
 Mit Docker/Supabase-Demo-Seed:
 
 ```bash
