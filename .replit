@@ -15,6 +15,35 @@ hidden = [
 # The app is a pnpm monorepo, so auto-detection is not enough.
 run = "corepack pnpm install --frozen-lockfile && corepack pnpm dev:replit"
 
+[gitHubImport]
+requiredFiles = [".replit", "replit.nix", "pnpm-workspace.yaml", "pnpm-lock.yaml"]
+
+[packager]
+language = "nodejs"
+ignoredPackages = [
+  "vite",
+  "@vitejs/plugin-react",
+  "react-scripts",
+]
+ignoredPaths = [
+  ".next",
+  ".pnpm-store",
+  "node_modules",
+  "apps/frontend-schnittwerk/.next",
+  "apps/frontend-template/.next",
+  "apps/frontend-schnittwerk/node_modules",
+  "apps/frontend-template/node_modules",
+  "packages/backend/node_modules",
+  "apps/frontend-schnittwerk/e2e",
+  "apps/frontend-template/e2e",
+  "theme-previews",
+]
+
+[packager.features]
+guessImports = false
+packageSearch = false
+enabledForHosting = false
+
 [nix]
 channel = "stable-24_05"
 

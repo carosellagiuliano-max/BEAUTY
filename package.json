@@ -3,6 +3,10 @@
   "version": "1.0.0",
   "private": true,
   "packageManager": "pnpm@10.28.0",
+  "engines": {
+    "node": ">=20 <23",
+    "pnpm": "10.28.0"
+  },
   "scripts": {
     "dev": "pnpm --filter frontend-schnittwerk dev",
     "dev:replit": "node scripts/replit-next.mjs dev",

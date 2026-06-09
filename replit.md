@@ -1,16 +1,67 @@
-# BeautifyPRO Demo on Replit
+# BeautifyPRO Demo - Replit Instructions
 
-This repository is a presentation build of BeautifyPRO. Keep it in mock mode unless
-real Supabase, SMTP and payment credentials are deliberately configured.
+## Critical Rules
 
-## Commands
+This repository is already a working Next.js app. Do not migrate it.
 
-- Preview: `pnpm dev:replit`
-- Build: `pnpm build`
-- Production start: `pnpm start:replit`
+- Do not convert this project to Vite.
+- Do not create or use `App.tsx`.
+- Do not edit all `page.tsx` files to remove async server components.
+- Do not change environment variables to `VITE_*`.
+- Do not install Vite or React template packages.
+- Do not rewrite the app structure.
+- Do not move files out of the pnpm workspace.
 
-The Replit config binds Next.js to `0.0.0.0` and uses Replit's `PORT`
-environment variable. If `PORT` is not set, it falls back to `3000`.
+If the workspace looks broken because an Agent migration already changed files,
+reset first:
+
+```bash
+git fetch origin
+git reset --hard origin/main
+git clean -fd
+```
+
+## Project Type
+
+- Framework: Next.js 16 App Router
+- Language: TypeScript
+- Package manager: pnpm 10.28.0 through Corepack
+- Monorepo: pnpm workspaces
+- Main app package: `apps/frontend-schnittwerk`
+- Shared backend package: `packages/backend`
+- Demo mode: enabled through mock data
+
+The technical package name `frontend-schnittwerk` is intentional. The visible
+demo branding is BeautifyPRO.
+
+## Correct Commands
+
+Install:
+
+```bash
+corepack pnpm install --frozen-lockfile
+```
+
+Development preview:
+
+```bash
+corepack pnpm dev:replit
+```
+
+Production build:
+
+```bash
+corepack pnpm build
+```
+
+Production start:
+
+```bash
+corepack pnpm start:replit
+```
+
+The start script binds Next.js to `0.0.0.0` and uses Replit's `PORT`
+environment variable.
 
 ## Demo Accounts
 
@@ -18,9 +69,14 @@ environment variable. If `PORT` is not set, it falls back to `3000`.
 - Customer: `kunde@beautifypro.demo` / `beauty-kunde-demo`
 - Staff: `staff@beautifypro.demo` / `beauty-staff-demo`
 
-## Deployment Notes
+## Environment
 
-- Do not add production secrets to Git.
-- Add real secrets only through Replit Secrets if this demo is later connected to
-  a real backend.
-- The current deployment target is a mock-data demo for presentations.
+No real Supabase, Stripe, SMTP or payment setup is required for the demo.
+The app runs in mock mode. Add real secrets only through Replit Secrets if the
+demo is intentionally connected to real services later.
+
+## Expected Behavior
+
+Use the existing `.replit`, `replit.nix`, `package.json`, `pnpm-lock.yaml` and
+`scripts/replit-next.mjs` files. The goal is to run the existing app, not to
+repair or regenerate the project.
