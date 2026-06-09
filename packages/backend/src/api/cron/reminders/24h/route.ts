@@ -1,14 +1,8 @@
 /**
  * BeautifyPRO - 24h Reminder Cron Job
- * Vercel Cron: Run daily at 08:00 CET
+ * Scheduler: Run daily at 08:00 CET
  *
- * vercel.json config:
- * {
- *   "crons": [{
- *     "path": "/api/cron/reminders/24h",
- *     "schedule": "0 7 * * *"  // 07:00 UTC = 08:00 CET
- *   }]
- * }
+ * Schedule: 0 7 * * * (07:00 UTC = 08:00 CET)
  */
 
 import { NextRequest, NextResponse } from 'next/server';

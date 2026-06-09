@@ -1,14 +1,8 @@
 /**
  * BeautifyPRO - 1h Reminder Cron Job
- * Vercel Cron: Run every hour
+ * Scheduler: Run every hour
  *
- * vercel.json config:
- * {
- *   "crons": [{
- *     "path": "/api/cron/reminders/1h",
- *     "schedule": "0 * * * *"  // Every hour at minute 0
- *   }]
- * }
+ * Schedule: 0 * * * * (every hour at minute 0)
  */
 
 import { NextRequest, NextResponse } from 'next/server';

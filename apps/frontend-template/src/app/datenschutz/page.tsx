@@ -153,7 +153,7 @@ export default async function DatenschutzPage() {
             <ul className="list-disc list-inside text-muted-foreground space-y-2">
               <li>Zahlungsdienstleister (z.B. Stripe)</li>
               <li>E-Mail-Dienstleister für Terminerinnerungen</li>
-              <li>Hosting-Provider (Vercel)</li>
+              <li>Hosting-Provider</li>
               <li>Datenbank-Anbieter (Supabase)</li>
             </ul>
           </section>

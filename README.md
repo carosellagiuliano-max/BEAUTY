@@ -74,7 +74,7 @@ Modern salon management system
 - **Backend**: Supabase (PostgreSQL, Auth, Storage)
 - **Payments**: Stripe
 - **Email**: Resend
-- **Hosting**: Vercel
+- **Hosting**: Replit Demo Deployments / portable Next.js hosting
 
 ## Quick Start
 

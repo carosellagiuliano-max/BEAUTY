@@ -2,7 +2,7 @@
  * BeautifyPRO - Marketing Cron Job
  * Runs daily to process automated marketing campaigns
  *
- * Vercel Cron: 0 8 * * * (daily at 08:00)
+ * Scheduler: 0 8 * * * (daily at 08:00)
  */
 
 import { NextRequest, NextResponse } from 'next/server';
@@ -11,7 +11,7 @@ import { getFeedbackService } from '@/lib/services/feedback-service';
 import { logger } from '@/lib/logging/logger';
 import { createServiceRoleClient } from '@/lib/supabase/server';
 
-// Verify the request is from Vercel Cron - CRON_SECRET is REQUIRED
+// Verify the request is from an authorized scheduler - CRON_SECRET is REQUIRED
 function verifyCronRequest(request: NextRequest): { valid: boolean; error?: string } {
   const authHeader = request.headers.get('authorization');
   const cronSecret = process.env.CRON_SECRET;

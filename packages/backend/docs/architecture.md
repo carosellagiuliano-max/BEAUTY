@@ -16,7 +16,7 @@ BeautifyPRO is a full-stack salon management system built for Swiss hair salons,
 | Storage | Supabase Storage |
 | Payments | Stripe |
 | Email | Resend |
-| Hosting | Vercel |
+| Hosting | Replit Demo Deployments / portable Next.js hosting |
 
 ## Architecture Layers
 

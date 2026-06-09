@@ -152,7 +152,7 @@ Rate limiting is NOT currently implemented.
 
 Implement rate limiting using:
 - Redis-based token bucket
-- Or Vercel Edge middleware
+- Or framework/hosting middleware
 
 Suggested limits:
 - Login: 5 attempts per minute

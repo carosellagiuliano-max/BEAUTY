@@ -1,6 +1,5 @@
 // BeautifyPRO - Waitlist Expiry Cron Job
-// Vercel Cron: Run every 5 minutes
-// vercel.json config: schedule "every 5 minutes"
+// Scheduler: Run every 5 minutes
 
 import { NextRequest, NextResponse } from 'next/server';
 import { getWaitlistService } from '@/lib/services/waitlist-service';

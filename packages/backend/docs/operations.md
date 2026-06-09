@@ -1,241 +1,120 @@
-# Operations Guide - BeautifyPRO
+# Operations Guide - BeautifyPRO Demo
 
 ## Deployment
 
-### Vercel (Empfohlen)
+This demo repository is prepared for Replit. It is a Next.js App Router pnpm
+workspace and should not be migrated to Vite or another React template.
+
+### Replit Preview
 
 ```bash
-# Vercel CLI installieren
-npm i -g vercel
-
-# Deployment
-vercel
-
-# Production Deployment
-vercel --prod
+corepack pnpm install --frozen-lockfile
+corepack pnpm dev:replit
 ```
 
-### Environment Variables
+### Replit Deployment
 
-Erforderliche Variablen in Vercel Dashboard setzen:
+```bash
+corepack pnpm build
+corepack pnpm start:replit
+```
+
+The production start command binds Next.js to `0.0.0.0` and uses Replit's
+`PORT` environment variable.
+
+## Environment Variables
+
+For the presentation demo, no real Supabase, Stripe, SMTP or payment credentials
+are required. The app runs in mock mode.
 
 ```env
-# Supabase
-NEXT_PUBLIC_SUPABASE_URL=https://xxx.supabase.co
-NEXT_PUBLIC_SUPABASE_ANON_KEY=xxx
-SUPABASE_SERVICE_ROLE_KEY=xxx
-
-# Stripe
-NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_live_xxx
-STRIPE_SECRET_KEY=sk_live_xxx
-STRIPE_WEBHOOK_SECRET=whsec_xxx
-
-# Sentry (optional)
-NEXT_PUBLIC_SENTRY_DSN=https://xxx@sentry.io/xxx
-SENTRY_ORG=beauty
-SENTRY_PROJECT=web
+NEXT_PUBLIC_MOCK_MODE=true
+PAYMENT_PROVIDER=pay_at_venue
+NEXT_PUBLIC_PAYMENT_PROVIDER=pay_at_venue
+NEXT_PUBLIC_FEATURE_SHOP_ENABLED=true
+NEXT_PUBLIC_FEATURE_BOOKING_ENABLED=true
+NEXT_PUBLIC_FEATURE_GALLERY_ENABLED=true
+NEXT_PUBLIC_FEATURE_FINANCE_ENABLED=true
 ```
 
----
+If the demo is later connected to real services, add secrets only through the
+host's secret manager. Do not commit production credentials.
 
-## Monitoring
-
-### Health Check
+## Health Check
 
 ```bash
-# Endpoint
-curl https://beautifypro.demo/api/health
-
-# Erwartete Response
-{
-  "status": "healthy",
-  "timestamp": "2025-01-01T12:00:00Z",
-  "checks": {
-    "database": { "status": "up", "latency_ms": 12 },
-    "supabase_auth": { "status": "up", "latency_ms": 45 }
-  },
-  "uptime_seconds": 86400
-}
+curl https://your-replit-app.replit.app/api/health
 ```
 
-### Sentry Dashboard
-
-- URL: https://sentry.io/organizations/beauty/
-- Alerts: Bei > 10 Errors/Stunde
-- Performance: p95 < 500ms überwachen
-
-### Logging
-
-Logs sind strukturiert (JSON) und in Vercel Logs verfügbar:
+Expected response:
 
 ```json
 {
-  "level": "info",
-  "message": "Appointment created",
-  "timestamp": "2025-01-01T12:00:00Z",
-  "context": {
-    "salonId": "xxx",
-    "customerId": "yyy",
-    "appointmentId": "zzz"
-  }
+  "status": "healthy",
+  "timestamp": "2026-06-09T12:00:00Z"
 }
 ```
 
----
+## Logs
 
-## Incident Response
+Use the Replit console and deployment logs for preview/deployment diagnostics.
+Application logs are structured and should not include secrets.
 
-### Severity Levels
+## Rollback
 
-| Level | Beschreibung | Response Time |
-|-------|--------------|---------------|
-| P1 | System down, keine Buchungen möglich | < 15 min |
-| P2 | Teilausfall, eingeschränkte Funktionalität | < 1 Stunde |
-| P3 | Fehler mit Workaround | < 4 Stunden |
-| P4 | Kosmetischer Bug | Nächster Sprint |
-
-### P1 Incident Ablauf
-
-1. **Erkennung** - Sentry Alert oder Kundenbeschwerde
-2. **Triage** - Scope und Impact feststellen
-3. **Kommunikation** - Statuspage aktualisieren
-4. **Mitigation** - Rollback oder Hotfix
-5. **Resolution** - Fix deployen
-6. **Postmortem** - Root Cause analysieren
-
-### Rollback
+Use Git as the source of truth:
 
 ```bash
-# Letzte funktionierende Version finden
-vercel ls
-
-# Rollback
-vercel rollback [deployment-url]
+git fetch origin
+git reset --hard origin/main
+git clean -fd
 ```
 
----
+If a Replit Agent run changed files unexpectedly, reset first and then run the
+existing pnpm/Replit commands again.
 
 ## Database Operations
 
-### Supabase Dashboard
-
-- URL: https://app.supabase.com/project/xxx
-- Backups: Automatisch täglich
-- Point-in-Time Recovery: 7 Tage
-
-### Migrations
+The demo defaults to mock data. If a real Supabase project is connected later:
 
 ```bash
-# Neue Migration erstellen
 npx supabase migration new feature_name
-
-# Migration anwenden
 npx supabase db push
 ```
 
-### Backup wiederherstellen
+Use Supabase backups before applying schema changes to a real database.
 
-1. Supabase Dashboard → Database → Backups
-2. Point-in-Time Recovery auswählen
-3. Neue Instanz erstellen oder bestehende überschreiben
+## Scheduled Jobs
 
----
+Cron endpoints are protected with `CRON_SECRET`. Any scheduler can call them if
+it sends:
 
-## Performance Tuning
-
-### Database Indexes
-
-Wichtige Indexes prüfen:
-
-```sql
--- Appointment lookups
-CREATE INDEX IF NOT EXISTS idx_appointments_salon_date
-ON appointments (salon_id, starts_at);
-
--- Customer search
-CREATE INDEX IF NOT EXISTS idx_customers_salon_search
-ON customers (salon_id, last_name, first_name);
+```http
+Authorization: Bearer <CRON_SECRET>
 ```
 
-### Caching
-
-- Next.js: `revalidate` für statische Seiten
-- Supabase: RLS-optimierte Queries
-- Browser: Service Worker für Assets
-
-### CDN
-
-- Vercel Edge Network automatisch aktiv
-- Bilder via `next/image` optimiert
-- Statische Assets: 1 Jahr Cache
-
----
+Do not expose cron endpoints without a secret.
 
 ## Security
 
-### Updates
+- Keep mock mode enabled for presentation deployments.
+- Store real secrets only in the hosting provider's secret manager.
+- Keep Supabase RLS enabled when using a real backend.
+- Restrict admin routes to authorized demo/admin users.
+- Do not deploy payment providers with test/demo secrets unless the flow is
+  clearly marked as test mode.
 
-```bash
-# Security Audit
-npm audit
+## Maintenance
 
-# Kritische Updates
-npm audit fix
+Before a public presentation:
 
-# Dependencies aktualisieren
-npm update
-```
+1. Pull the latest `main`.
+2. Run `corepack pnpm build`.
+3. Run `corepack pnpm start:replit` or publish through Replit Deployments.
+4. Test `/`, `/termin-buchen`, `/admin/login`, `/konto/login` and `/shop`.
 
-### Secrets Rotation
+## Demo Accounts
 
-| Secret | Rotation | Prozess |
-|--------|----------|---------|
-| Supabase Keys | Bei Verdacht | Dashboard → Settings → API |
-| Stripe Keys | Jährlich | Stripe Dashboard |
-| Webhook Secrets | Bei Leak | Stripe → Webhooks |
-
-### Access Control
-
-- Supabase: RLS Policies aktiviert
-- Admin: Nur über Auth
-- API: Rate Limiting via Vercel
-
----
-
-## Maintenance Windows
-
-### Geplante Wartung
-
-- Zeit: Sonntag 02:00-04:00 CET
-- Ankündigung: 48h vorher
-- Kanal: E-Mail an betroffene Kunden
-
-### Prozess
-
-1. Wartungsmodus aktivieren (Banner)
-2. Backup erstellen
-3. Migrations/Updates durchführen
-4. Tests ausführen
-5. Wartungsmodus deaktivieren
-6. Monitoring prüfen
-
----
-
-## Contacts
-
-### Eskalation
-
-| Rolle | Kontakt | Verfügbarkeit |
-|-------|---------|---------------|
-| On-Call Dev | +41 xxx | 24/7 |
-| Tech Lead | email@xxx | Bürozeiten |
-| Supabase Support | support.supabase.com | 24/7 |
-| Vercel Support | vercel.com/support | 24/7 |
-
-### External Services
-
-| Service | Status Page |
-|---------|-------------|
-| Supabase | status.supabase.com |
-| Vercel | vercel-status.com |
-| Stripe | status.stripe.com |
+- Admin: `admin@beautifypro.demo` / `beauty-admin-demo`
+- Customer: `kunde@beautifypro.demo` / `beauty-kunde-demo`
+- Staff: `staff@beautifypro.demo` / `beauty-staff-demo`
