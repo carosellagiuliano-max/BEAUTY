@@ -25,6 +25,7 @@ die App ueber die vorhandene `.replit`-Konfiguration starten.
 Preview im Replit Editor:
 
 ```bash
+NPM_CONFIG_REGISTRY=https://registry.npmjs.org/ npm_config_registry=https://registry.npmjs.org/ corepack pnpm install --frozen-lockfile --registry=https://registry.npmjs.org/
 pnpm dev:replit
 ```
 

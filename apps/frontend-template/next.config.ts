@@ -129,6 +129,12 @@ const nextConfig: NextConfig = {
   async headers() {
     const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
     const isDev = process.env.NODE_ENV === 'development' || supabaseUrl.includes('localhost');
+    const isReplit =
+      Boolean(process.env.REPL_ID || process.env.REPLIT_DEV_DOMAIN || process.env.REPLIT_DOMAINS) ||
+      process.env.NEXT_PUBLIC_MOCK_MODE === 'true';
+    const frameAncestors = isReplit
+      ? "'self' https://*.replit.com https://*.replit.dev https://*.replit.app https://*.repl.co"
+      : "'none'";
 
     // Build connect-src based on environment
     let connectSrc = "'self' https://*.supabase.co wss://*.supabase.co";
@@ -149,7 +155,7 @@ const nextConfig: NextConfig = {
       `font-src 'self' data: https://fonts.gstatic.com`,
       `connect-src ${connectSrc} https://*.googleapis.com`,
       `frame-src 'self' https://www.google.com https://maps.google.com`,
-      `frame-ancestors 'none'`,
+      `frame-ancestors ${frameAncestors}`,
       "base-uri 'self'",
       "form-action 'self'",
       "object-src 'none'",
@@ -161,7 +167,7 @@ const nextConfig: NextConfig = {
         headers: [
           { key: 'X-DNS-Prefetch-Control', value: 'on' },
           { key: 'X-Content-Type-Options', value: 'nosniff' },
-          { key: 'X-Frame-Options', value: 'DENY' },
+          ...(isReplit ? [] : [{ key: 'X-Frame-Options', value: 'DENY' }]),
           { key: 'X-XSS-Protection', value: '1; mode=block' },
           { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
           // HSTS: Enforce HTTPS for 1 year, include subdomains

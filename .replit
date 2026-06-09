@@ -13,7 +13,7 @@ hidden = [
 
 # Replit Preview / Run button.
 # The app is a pnpm monorepo, so auto-detection is not enough.
-run = "corepack pnpm install --frozen-lockfile && corepack pnpm dev:replit"
+run = "NPM_CONFIG_REGISTRY=https://registry.npmjs.org/ npm_config_registry=https://registry.npmjs.org/ corepack pnpm install --frozen-lockfile --registry=https://registry.npmjs.org/ && corepack pnpm dev:replit"
 
 [gitHubImport]
 requiredFiles = [".replit", "replit.nix", "pnpm-workspace.yaml", "pnpm-lock.yaml"]
@@ -49,7 +49,7 @@ channel = "stable-24_05"
 
 [deployment]
 deploymentTarget = "cloudrun"
-build = "corepack pnpm install --frozen-lockfile && corepack pnpm build"
+build = "NPM_CONFIG_REGISTRY=https://registry.npmjs.org/ npm_config_registry=https://registry.npmjs.org/ corepack pnpm install --frozen-lockfile --registry=https://registry.npmjs.org/ && corepack pnpm build"
 run = "corepack pnpm start:replit"
 
 [[ports]]

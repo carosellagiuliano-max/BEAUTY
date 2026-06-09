@@ -11,7 +11,7 @@
     "dev": "pnpm --filter frontend-schnittwerk dev",
     "dev:replit": "node scripts/replit-next.mjs dev",
     "build": "pnpm --filter frontend-schnittwerk build",
-    "build:replit": "corepack pnpm install --frozen-lockfile && corepack pnpm build",
+    "build:replit": "NPM_CONFIG_REGISTRY=https://registry.npmjs.org/ npm_config_registry=https://registry.npmjs.org/ corepack pnpm install --frozen-lockfile --registry=https://registry.npmjs.org/ && corepack pnpm build",
     "start": "pnpm --filter frontend-schnittwerk start",
     "start:replit": "node scripts/replit-next.mjs start",
     "dev:all": "pnpm -r dev",

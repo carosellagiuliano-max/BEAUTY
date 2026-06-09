@@ -39,7 +39,7 @@ demo branding is BeautifyPRO.
 Install:
 
 ```bash
-corepack pnpm install --frozen-lockfile
+NPM_CONFIG_REGISTRY=https://registry.npmjs.org/ npm_config_registry=https://registry.npmjs.org/ corepack pnpm install --frozen-lockfile --registry=https://registry.npmjs.org/
 ```
 
 Development preview:
